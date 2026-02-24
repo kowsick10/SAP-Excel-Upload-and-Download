@@ -1,0 +1,66 @@
+managed implementation in class zbp_i_22cs083_user unique;
+strict ( 2 );
+
+define behavior for ZI_22CS083_USER alias User
+persistent table z22cs083
+lock master
+authorization master ( global, instance )
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly : update ) EmpId, DevId;
+  field ( readonly ) LocalCreatedBy, LocalCreatedAt, LocalLastChangedBy, LocalLastChangedAt, LastChangedAt;
+
+  field ( readonly ) Criticality, TemplateCriticality;
+
+  mapping for z22cs083 {
+    EmpId = emp_id;
+    DevId = dev_id;
+    DevDescription = dev_description;
+    Attachment = attachment;
+    MimeType = mimetype;
+    Filename = filename;
+    FileStatus = file_status;
+    TemplateStatus = template_status;
+    LocalCreatedBy = local_created_by;
+    LocalCreatedAt = local_created_at;
+    LocalLastChangedBy = local_last_changed_by;
+    LocalLastChangedAt = local_last_changed_at;
+    LastChangedAt = last_changed_at;
+  }
+
+  action ( features : instance ) uploadExcelData result [1] $self;
+  action ( features : instance ) downloadExcel result [1] $self;
+
+  // ------------------------------------------------------------------------
+  // Cleaned up the determination syntax:
+  // ------------------------------------------------------------------------
+  determination fillfilestatus on modify { field EmpId, DevId; }
+  determination fillselectedstatus on modify { field Attachment; }
+
+  association _UserDev { create; }
+}
+
+define behavior for ZI_22CS083_USER_DEV alias UserDev
+persistent table z22cs083_dev
+lock dependent by _User
+authorization dependent by _User
+{
+  update;
+  delete;
+
+  field ( readonly ) EmpId, DevId, SerialNo;
+
+  mapping for z22cs083_dev {
+    EmpId = emp_id;
+    DevId = dev_id;
+    SerialNo = serial_no;
+    ObjectType = object_type;
+    ObjectName = object_name;
+  }
+
+  association _User;
+}

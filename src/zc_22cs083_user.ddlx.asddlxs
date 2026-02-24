@@ -1,0 +1,35 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: { typeName: 'File Upload', typeNamePlural: 'File Uploads', title: { type: #STANDARD, value: 'EmpId' } }
+}
+annotate view ZC_22CS083_USER with
+{
+  @UI.facet: [ { id: 'General', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'General Info', position: 10 } ]
+
+  @UI: { lineItem: [{ position: 10 }], identification: [{ position: 10 }] }
+  EmpID;
+
+  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+  DevID;
+
+  @UI: { identification: [{ position: 30 }] }
+  DevDescription;
+
+  @UI: { identification: [{ position: 40, label: 'Upload Excel File' }] }
+  Attachment;
+
+  @UI.hidden: true
+  Mimetype;
+
+  @UI.hidden: true
+  Filename;
+  
+  @UI: { lineItem: [
+      { position: 50, type: #FOR_ACTION, dataAction: 'uploadExcel', label: 'Process Excel' },
+      { position: 60, type: #FOR_ACTION, dataAction: 'downloadTemplate', label: 'Get Template' }
+  ], identification: [
+      { position: 50, type: #FOR_ACTION, dataAction: 'uploadExcel', label: 'Process Excel' },
+      { position: 60, type: #FOR_ACTION, dataAction: 'downloadTemplate', label: 'Get Template' }
+  ] }
+  FileStatus;
+}

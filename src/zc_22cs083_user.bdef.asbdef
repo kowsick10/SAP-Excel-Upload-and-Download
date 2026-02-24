@@ -1,0 +1,23 @@
+projection;
+strict ( 2 );
+
+define behavior for ZC_22CS083_USER alias User
+{
+  use create;
+  use update;
+  use delete;
+
+  // FIX 3: Update action names here as well
+  use action uploadExcelData;
+  use action downloadExcel;
+
+  use association _UserDev { create; }
+}
+
+define behavior for ZC_22CS083_USER_DEV alias UserDev
+{
+  use update;
+  use delete;
+
+  use association _User;
+}
